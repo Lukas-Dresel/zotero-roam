@@ -132,8 +132,13 @@
             }
         },
 
-        formatItemNotes(notes){
-            return notes.flat(1).map(b => zoteroRoam.utils.parseNoteBlock(b)).filter(b => b.trim());
+        formatItemNotes(notes) {
+            return notes
+                .flat(1)
+                .map(b => zoteroRoam.utils.parseNoteBlock(b))
+                .filter(b => b.trim())
+                .map(b => b.split('\n').map(x => { return {string: x}}))
+                .flat(1);
         },
 
         formatItemReference(item, format, {accent_class = "zr-highlight"} = {}){
@@ -558,7 +563,7 @@
         parseNoteBlock(block){
             let cleanBlock = block;
             let formattingSpecs = {
-                "</p>": "",
+                "</p>": "\n",
                 "</div>": "",
                 "</span>": "",
                 "<blockquote>": "> ",

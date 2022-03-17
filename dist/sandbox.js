@@ -961,8 +961,13 @@ var zoteroRoam = {};
             }
         },
 
-        formatItemNotes(notes){
-            return notes.flat(1).map(b => zoteroRoam.utils.parseNoteBlock(b)).filter(b => b.trim());
+        formatItemNotes(notes) {
+            return notes
+                .flat(1)
+                .map(b => zoteroRoam.utils.parseNoteBlock(b))
+                .filter(b => b.trim())
+                .map(b => b.split('\n').map(x => { return {string: x}}))
+                .flat(1);
         },
 
         formatItemReference(item, format, {accent_class = "zr-highlight"} = {}){
@@ -1387,7 +1392,7 @@ var zoteroRoam = {};
         parseNoteBlock(block){
             let cleanBlock = block;
             let formattingSpecs = {
-                "</p>": "",
+                "</p>": "\n",
                 "</div>": "",
                 "</span>": "",
                 "<blockquote>": "> ",
@@ -1864,12 +1869,12 @@ var zoteroRoam = {};
 
             let pageUID = uid || window.roamAlphaAPI.util.generateUID();
             let page = {title: title, uid: pageUID};
-            if(pageUID != uid){
-                window.roamAlphaAPI.createPage({'page': {'title': title, 'uid': pageUID}});
-                page.new = true;
-            } else {
-                page.new = false;
+            if (pageUID == uid) {
+                window.roamAlphaAPI.deletePage({'page': {'title': title, 'uid': pageUID}});
             }
+            window.roamAlphaAPI.createPage({'page': {'title': title, 'uid': pageUID}});
+            page.new = true;
+
             let meta = null;
 
             if(item){
@@ -1919,7 +1924,7 @@ var zoteroRoam = {};
             let item = zoteroRoam.data.items.find(i => i.key == citekey);
 
             try {
-                let itemNotes = zoteroRoam.formatting.getItemChildren(item, {pdf_as: "raw", notes_as: "formatted", split_char = zoteroRoam.config.params.notes["split_char"] }).notes;
+                let itemNotes = zoteroRoam.formatting.getItemChildren(item, {pdf_as: "raw", notes_as: "formatted", split_char: zoteroRoam.config.params.notes["split_char"] }).notes;
                 let outcome = {};
 
                 let pageUID = uid || "";
@@ -5932,7 +5937,7 @@ var zoteroRoam = {};
             metadata.push(`Publication:: ${ item.data.publicationTitle || item.data.bookTitle || "" }`)
             if (item.data.url) { metadata.push(`URL : ${item.data.url}`) };
             if (item.data.dateAdded) { metadata.push(`Date Added:: ${zoteroRoam.utils.makeDNP(item.data.dateAdded, {brackets: true})}`) }; // Date added, as Daily Notes Page reference
-            metadata.push(`Zotero links:: ${zoteroRoam.formatting.getLocalLink(item, {format = "markdown", text = "Local library"})}, ${zoteroRoam.formatting.getWebLink(item, {format = "markdown", text = "Local library"})}`); // Local + Web links to the item
+            metadata.push(`Zotero links:: ${zoteroRoam.formatting.getLocalLink(item, {format: "markdown", text: "Local library"})}, ${zoteroRoam.formatting.getWebLink(item, {format: "markdown", text: "Local library"})}`); // Local + Web links to the item
             if (item.data.tags.length > 0) { metadata.push(`Tags:: ${zoteroRoam.formatting.getTags(item)}`) }; // Tags, if any
             
             let children = zoteroRoam.formatting.getItemChildren(item, {pdf_as: "links", notes_as: "formatted"});

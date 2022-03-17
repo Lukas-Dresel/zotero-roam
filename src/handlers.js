@@ -68,12 +68,12 @@
 
             let pageUID = uid || window.roamAlphaAPI.util.generateUID();
             let page = {title: title, uid: pageUID};
-            if(pageUID != uid){
-                window.roamAlphaAPI.createPage({'page': {'title': title, 'uid': pageUID}});
-                page.new = true;
-            } else {
-                page.new = false;
+            if (pageUID == uid) {
+                window.roamAlphaAPI.deletePage({'page': {'title': title, 'uid': pageUID}});
             }
+            window.roamAlphaAPI.createPage({'page': {'title': title, 'uid': pageUID}});
+            page.new = true;
+
             let meta = null;
 
             if(item){
@@ -123,7 +123,7 @@
             let item = zoteroRoam.data.items.find(i => i.key == citekey);
 
             try {
-                let itemNotes = zoteroRoam.formatting.getItemChildren(item, {pdf_as: "raw", notes_as: "formatted", split_char = zoteroRoam.config.params.notes["split_char"] }).notes;
+                let itemNotes = zoteroRoam.formatting.getItemChildren(item, {pdf_as: "raw", notes_as: "formatted", split_char: zoteroRoam.config.params.notes["split_char"] }).notes;
                 let outcome = {};
 
                 let pageUID = uid || "";

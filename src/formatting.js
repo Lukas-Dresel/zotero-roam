@@ -181,7 +181,7 @@
             metadata.push(`Publication:: ${ item.data.publicationTitle || item.data.bookTitle || "" }`)
             if (item.data.url) { metadata.push(`URL : ${item.data.url}`) };
             if (item.data.dateAdded) { metadata.push(`Date Added:: ${zoteroRoam.utils.makeDNP(item.data.dateAdded, {brackets: true})}`) }; // Date added, as Daily Notes Page reference
-            metadata.push(`Zotero links:: ${zoteroRoam.formatting.getLocalLink(item, {format = "markdown", text = "Local library"})}, ${zoteroRoam.formatting.getWebLink(item, {format = "markdown", text = "Local library"})}`); // Local + Web links to the item
+            metadata.push(`Zotero links:: ${zoteroRoam.formatting.getLocalLink(item, {format: "markdown", text: "Local library"})}, ${zoteroRoam.formatting.getWebLink(item, {format: "markdown", text: "Local library"})}`); // Local + Web links to the item
             if (item.data.tags.length > 0) { metadata.push(`Tags:: ${zoteroRoam.formatting.getTags(item)}`) }; // Tags, if any
             
             let children = zoteroRoam.formatting.getItemChildren(item, {pdf_as: "links", notes_as: "formatted"});
