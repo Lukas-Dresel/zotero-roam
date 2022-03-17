@@ -5106,7 +5106,7 @@ var zoteroRoam = {};
                 var ref = refCitekeys[i];
         
                 // Handle case where item hasn't been checked against data yet
-                if(!ref.dataset.zoteroBib){
+                if(!ref.dataset.zoteroBib) {
                     if(zoteroRoam.data.items.find(libItem => libItem.key == ref.dataset.linkTitle.replace("@", ""))){
                         ref.dataset.zoteroBib = "inLibrary";
                     } else {
@@ -5117,7 +5117,7 @@ var zoteroRoam = {};
                 // Only add a listener for context menu if the item has been found in the library
                 if (ref.dataset.zoteroBib == "inLibrary") {
                     // Robust regardless of brackets
-                        ref.querySelector('.rm-page-ref').addEventListener("contextmenu", zoteroRoam.interface.popContextMenu);
+                    ref.querySelector('.rm-page-ref').addEventListener("contextmenu", zoteroRoam.interface.popContextMenu);
                 }
             }
         },
